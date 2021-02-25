@@ -6,16 +6,15 @@ export const Container = styled(Flex)`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-content: stretch;
-  align-items: stretch;
-  height: 97vh;
+  height: 100vh;
 `;
 export const ProductColumn = styled(Flex)`
-  flex: 6 1 auto;
-  height: 97vh;
+  flex: 3 1 auto;
+  height: 100vh;
+  max-width: 66vw;
 `;
 
 export const CheckoutColumn = styled(Flex)`
   flex: 3 1 auto;
-  height: 97vh;
+  height: 100vh;
 `;
