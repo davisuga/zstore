@@ -10,6 +10,9 @@ type HomePageProps = {
 export default function HomePage({ products, error }: HomePageProps) {
   return (
     <Container>
+      {error && (
+        <ErrorModal statusText={error.statusText} status={error.status} />
+      )}
       <ProductColumn bg="blue">
         {!error &&
           products.length &&
