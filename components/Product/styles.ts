@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Flex from "../../components/Flex";
+import Flex from "../Flex";
 
 export const Container = styled(Flex)`
   flex-direction: column;

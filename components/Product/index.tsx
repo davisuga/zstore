@@ -7,23 +7,24 @@ import {
   ProductDescription,
   BuyButton,
   Picture,
-} from "../../styles/Product";
+} from "./styles";
 import Flex from "../Flex";
 
-export type ProductProps = {
+export type ProductComponentProps = {
   name: string;
   price: number;
   available: number;
   onAddToCart?: () => void;
   children?: React.ReactNode;
 };
+
 const Product = ({
   name,
   price,
   available,
   children,
   onAddToCart,
-}: ProductProps) => {
+}: ProductComponentProps) => {
   const [availableUnits, setAvailableUnits] = useState(available);
 
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, ErrorTitle, RefreshButton } from "../../styles/ErrorModal";
+import { Container, ErrorTitle, RefreshButton } from "./styles";
 
 type NetworkingError = {
   status: number;
