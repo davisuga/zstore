@@ -19,7 +19,7 @@ export default function HomePage({ products, error }: HomePageProps) {
           status={error.status}
         />
       )}
-      <ProductColumn bg="blue">
+      <ProductColumn>
         {!error &&
           products.length &&
           products.map((product, index) => (
@@ -31,7 +31,7 @@ export default function HomePage({ products, error }: HomePageProps) {
             ></Product>
           ))}
       </ProductColumn>
-      <CheckoutColumn bg="purple"></CheckoutColumn>
+      <CheckoutColumn></CheckoutColumn>
     </Container>
   );
 }
@@ -41,7 +41,6 @@ export async function getStaticProps() {
     const products = await api.get<{ products: ProductProps }>("products.json");
     return { props: { products: products.data.products } };
   } catch (error) {
-    debugger;
     return {
       props: {
         error: {
