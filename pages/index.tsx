@@ -2,16 +2,22 @@ import ErrorModal from "../components/ErrorModal";
 import Product, { ProductProps } from "../components/Product";
 import api from "../services/axios";
 import { CheckoutColumn, Container, ProductColumn } from "../styles/HomePage";
+import { useRouter } from "next/router";
 
 type HomePageProps = {
   products: ProductProps[];
   error: any;
 };
 export default function HomePage({ products, error }: HomePageProps) {
+  const router = useRouter();
   return (
     <Container>
       {error && (
-        <ErrorModal statusText={error.statusText} status={error.status} />
+        <ErrorModal
+          onRefresh={() => router.replace("/")}
+          statusText={error.statusText}
+          status={error.status}
+        />
       )}
       <ProductColumn bg="blue">
         {!error &&
