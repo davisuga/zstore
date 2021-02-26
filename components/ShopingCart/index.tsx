@@ -43,13 +43,13 @@ const ShoppingCart: React.FC = ({ products }) => {
         <div>Subtotal:</div> <div>{subtotal}</div>
       </Subtotal>
       <Discount>
-        <div>Discount:</div> <div>{subtotal}</div>
+        <div>Discount:</div> <div>{discount}</div>
       </Discount>
       <Shipping>
-        <div>Shipping:</div> <div>{subtotal}</div>
+        <div>Shipping:</div> <div>{shipping}</div>
       </Shipping>
       <Total>
-        <div>Total:</div> <div>{subtotal}</div>
+        <div>Total:</div> <div>{total}</div>
       </Total>
     </Container>
   );
