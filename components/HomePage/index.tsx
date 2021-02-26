@@ -1,22 +1,43 @@
 import ErrorModal from "../ErrorModal";
 import Product from "../Product";
-import api from "../../services/axios";
+import { useState } from "react";
 import { CheckoutColumn, Container, ProductColumn } from "./styles";
 import { useRouter } from "next/router";
 import ShopingCart from "../ShopingCart";
+import NavBar from "../NavBar/Index";
 
 type HomePageProps = {
   products: ProductProps[];
   error: any;
 };
+
+type Cart = {
+  [productName: string]: {
+    price: number;
+    quantity: number;
+  };
+};
 export default function HomePage({ products, error }: HomePageProps) {
   const router = useRouter();
+  const [productsInCart, setProductsInCart] = useState<Cart>({});
+
+  const handleAddProduct = ({ name, price }) => {
+    console.time("addToCart");
+    const currentAmountInTheCart = productsInCart[name]?.quantity || 0;
+    const newProduct = { price, quantity: currentAmountInTheCart + 1 };
+    setProductsInCart({ ...productsInCart, [name]: newProduct });
+    console.timeEnd("addToCart");
+  };
   return (
     <Container>
+      <NavBar title={"Shopping"} username={"John Doe"}>
+        {/* TODO: Remove this button */}
+        <button onClick={() => router.replace("/")}>Refresh</button>
+      </NavBar>
       {error && (
         <ErrorModal
           onRefresh={() => router.replace("/")}
-          statusText={error.statusText}
+          statusText={error.message}
           status={error.status}
         />
       )}
@@ -29,6 +50,7 @@ export default function HomePage({ products, error }: HomePageProps) {
               name={product.name}
               price={product.price}
               available={product.available}
+              onAddToCart={handleAddProduct}
             ></Product>
           ))}
       </ProductColumn>
@@ -37,20 +59,4 @@ export default function HomePage({ products, error }: HomePageProps) {
       </CheckoutColumn>
     </Container>
   );
-}
-
-export async function getStaticProps() {
-  try {
-    const products = await api.get<{ products: ProductProps }>("products.json");
-    return { props: { products: products.data.products } };
-  } catch (error) {
-    return {
-      props: {
-        error: {
-          status: error?.response?.status || 500,
-          message: error?.response.statusText || error.message,
-        },
-      },
-    };
-  }
 }

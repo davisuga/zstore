@@ -14,10 +14,13 @@ export type ProductComponentProps = {
   name: string;
   price: number;
   available: number;
-  onAddToCart?: () => void;
+  onAddToCart?: ({ name, price }: BasicProductInfo) => void;
   children?: React.ReactNode;
 };
-
+type BasicProductInfo = {
+  name: string;
+  price: number;
+};
 const Product = ({
   name,
   price,
