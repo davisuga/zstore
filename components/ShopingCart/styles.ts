@@ -22,6 +22,7 @@ export const Subtotal = styled(Flex)`
   padding: 1.5em;
   justify-content: space-between;
   border-bottom: 1px solid gray;
+  flex: 0;
 `;
 export const Total = Subtotal;
 export const Discount = Subtotal;
