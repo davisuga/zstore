@@ -11,7 +11,6 @@ type FlexProps = {
 
 const Flex = styled.div<FlexProps>`
   display: flex;
-  flex-shrink: ${(props) => props.flexDirection || 1};
   flex-direction: ${(props) => props.flexDirection};
   justify-content: ${(props) => props.justifyContent};
   align-items: ${(props) => props.alignItems};
