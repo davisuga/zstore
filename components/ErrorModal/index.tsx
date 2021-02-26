@@ -1,5 +1,10 @@
-import React from "react";
-import { Container, ErrorTitle, RefreshButton } from "./styles";
+import React, { useState } from "react";
+import {
+  Container,
+  ErrorTitle,
+  RefreshButton,
+  ActivityIndicator,
+} from "./styles";
 
 type NetworkingError = {
   status: number;
@@ -7,11 +12,21 @@ type NetworkingError = {
 };
 type ErrorModalProps = NetworkingError & { onRefresh: () => void };
 const ErrorModal = ({ status, statusText, onRefresh }: ErrorModalProps) => {
-  console.log(status, statusText);
+  const [loading, setLoading] = useState(false);
   return (
     <Container>
-      <ErrorTitle>Erro: {statusText || status}</ErrorTitle>
-      <RefreshButton onClick={onRefresh}>Refresh</RefreshButton>
+      <ErrorTitle>
+        Error: {statusText} ({status})
+      </ErrorTitle>
+
+      <RefreshButton
+        onClick={() => {
+          setLoading(true);
+          onRefresh();
+        }}
+      >
+        {loading ? <ActivityIndicator /> : "Try again"}
+      </RefreshButton>
     </Container>
   );
 };
