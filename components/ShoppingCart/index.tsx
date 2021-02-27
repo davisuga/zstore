@@ -138,16 +138,16 @@ const ShoppingCart = ({
         <ApplyButton onClick={onApplyDiscount}>APPLY</ApplyButton>
       </DiscountArea>
       <Subtotal>
-        <div>Subtotal:</div> <div>{subtotal}</div>
+        <div>Subtotal:</div> <div>${subtotal}</div>
       </Subtotal>
-      <Discount>
-        <div>Discount:</div> <div>{discount}</div>
-      </Discount>
       <Shipping>
-        <div>Shipping:</div> <div>{shipping}</div>
+        <div>Shipping:</div> <div>${shipping}</div>
       </Shipping>
+      <Discount>
+        <div>Discount:</div> <div>${discount}</div>
+      </Discount>
       <Total>
-        <div>Total:</div> <div>{total}</div>
+        <div>Total:</div> <div>${total}</div>
       </Total>
     </Container>
   );
