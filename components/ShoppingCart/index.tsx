@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Total,
   Title,
@@ -12,25 +12,123 @@ import {
 } from "./styles";
 import ProductItem from "./ProductItem";
 // import { Container } from './styles';
-type Product = {
-  name: string;
-  quantity: number;
-  price: number;
+
+type TotalPriceAndWeight = { price: number; weight: number };
+
+type ShoppingCartProps = {
+  cart: Cart;
+  vouchers: VoucherHashTable;
+  onAddProduct: (product: ProductProps) => void;
+  onRemoveProduct: (product: ProductProps) => void;
 };
-const ShoppingCart: React.FC = ({ products }) => {
+
+const calculateWeightAndPrice = (cart: Cart) => {
+  console.log("Calculating total...");
+
+  const totalAmountReducer = (
+    previousValue: TotalPriceAndWeight,
+    currentValue: string
+  ) => {
+    const currentProduct = cart[currentValue];
+    const price =
+      currentProduct.price * currentProduct.quantity + previousValue.price;
+    const weight = currentProduct.quantity * 1 + previousValue.weight;
+    return { price, weight };
+  };
+
+  const calculatedTotal = Object.keys(cart).reduce(totalAmountReducer, {
+    price: 0,
+    weight: 0,
+  });
+
+  return calculatedTotal;
+};
+
+export const calculateShippingCosts = (
+  cartPrice: number,
+  cartWeight: number
+) => {
+  if (cartPrice > 400) {
+    return 0;
+  } else if (cartWeight <= 10) {
+    return 30;
+  } else {
+    return 30 + Math.floor((cartWeight - 10) / 5) * 7;
+  }
+};
+
+export const calculateVoucherDiscount = (
+  vouchers: VoucherHashTable,
+  productsPrice: number,
+  shippingCosts: number,
+  discountCode: string
+) => {
+  const voucherData = vouchers[discountCode];
+  if (!voucherData) return 0;
+  const totalWithShipping = productsPrice + shippingCosts;
+  const voucherTypes = {
+    percentual: (amount: number, total: number) => {
+      return (amount / 100) * (total - shippingCosts);
+    },
+    fixed: (amount: number, total: number) => {
+      return amount;
+    },
+    shipping: (minValue: number, total: number) => {
+      if (total < minValue) return 0;
+      return shippingCosts;
+    },
+  };
+
+  const calculateDiscount = voucherTypes[voucherData.type];
+  return calculateDiscount(
+    voucherData.amount || voucherData.minValue,
+    totalWithShipping
+  );
+};
+
+const ShoppingCart = ({
+  cart,
+  onRemoveProduct,
+  onAddProduct,
+  vouchers,
+}: ShoppingCartProps) => {
   const [subtotal, setSubtotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [shipping, setShipping] = useState(0);
   const [discountCode, setDiscountCode] = useState("");
   const [total, setTotal] = useState(0);
-  const onApplyDiscount = () => {};
+  const [cartWeight, setCartWeight] = useState(0);
+  const [applyDiscount, setApplyDiscount] = useState(false);
+
+  const onApplyDiscount = () => {
+    const calculatedDiscount =
+      calculateVoucherDiscount(vouchers, subtotal, shipping, discountCode) || 0;
+    setDiscount(calculatedDiscount);
+    setTotal(subtotal + shipping - calculatedDiscount);
+  };
+
+  useEffect(() => {
+    const {
+      price: productsPrice,
+      weight: productsWeight,
+    } = calculateWeightAndPrice(cart);
+    setSubtotal(productsPrice);
+    setCartWeight(productsWeight);
+    const shippingCosts = calculateShippingCosts(productsPrice, productsWeight);
+    setShipping(shippingCosts);
+    setTotal(productsPrice + shippingCosts - discount);
+  }, [cart]);
 
   return (
     <Container>
       <Title>Shopping Cart</Title>
-      {/* {products.map((product) => (
-        <ProductItem product={product} />
-      ))} */}
+      {Object.keys(cart).map((productName) => (
+        <ProductItem
+          onAddProduct={onAddProduct}
+          onRemoveProduct={onRemoveProduct}
+          product={{ ...cart[productName], name: productName }}
+        />
+      ))}
       <DiscountArea>
         <DiscountInput
           value={discountCode}
