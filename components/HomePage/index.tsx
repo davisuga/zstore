@@ -3,7 +3,7 @@ import Product from "../Product";
 import { useState } from "react";
 import { CheckoutColumn, Container, ProductColumn } from "./styles";
 import { useRouter } from "next/router";
-import ShopingCart from "../ShopingCart";
+import ShoppingCart from "../ShoppingCart";
 import NavBar from "../NavBar/Index";
 
 type HomePageProps = {
@@ -55,7 +55,7 @@ export default function HomePage({ products, error }: HomePageProps) {
           ))}
       </ProductColumn>
       <CheckoutColumn>
-        <ShopingCart />
+        <ShoppingCart />
       </CheckoutColumn>
     </Container>
   );
