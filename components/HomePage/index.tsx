@@ -7,55 +7,87 @@ import ShoppingCart from "../ShoppingCart";
 import NavBar from "../NavBar/Index";
 
 type HomePageProps = {
-  products: ProductProps[];
+  products: Cart;
+  vouchers: VoucherHashTable;
   error: any;
 };
 
-type Cart = {
-  [productName: string]: {
-    price: number;
-    quantity: number;
-  };
-};
-export default function HomePage({ products, error }: HomePageProps) {
+export default function HomePage({ products, error, vouchers }: HomePageProps) {
   const router = useRouter();
   const [productsInCart, setProductsInCart] = useState<Cart>({});
+  const handleAddProduct = ({
+    name,
+    price,
+  }: {
+    name: string;
+    price: number;
+  }) => {
+    const productData = products[name];
 
-  const handleAddProduct = ({ name, price }) => {
-    console.time("addToCart");
-    const currentAmountInTheCart = productsInCart[name]?.quantity || 0;
-    const newProduct = { price, quantity: currentAmountInTheCart + 1 };
-    setProductsInCart({ ...productsInCart, [name]: newProduct });
-    console.timeEnd("addToCart");
+    const hasAvailableProducts =
+      !productsInCart[name] ||
+      productData.available > productsInCart[name].quantity;
+    if (hasAvailableProducts) {
+      const currentAmountInTheCart = productsInCart[name]?.quantity || 0;
+      const newProduct = { price, quantity: currentAmountInTheCart + 1 };
+      setProductsInCart({ ...productsInCart, [name]: newProduct });
+    }
   };
+  const handleRemoveProduct = ({ name }: { name: string }) => {
+    const productData = productsInCart[name];
+    console.log("product quantity in the cart: ", productData.quantity);
+    if (productData.quantity > 1) {
+      const updatedProductData = {
+        ...productData,
+        quantity: productData.quantity - 1,
+      };
+      setProductsInCart({ ...productsInCart, [name]: updatedProductData });
+    } else if (productData.quantity <= 1) {
+      const newCart = Object.assign({}, productsInCart);
+      delete newCart[name];
+      setProductsInCart(newCart);
+      console.log("deleting product ", name, "...");
+    }
+  };
+  if (error) {
+    return (
+      <ErrorModal
+        onRefresh={() => router.replace("/")}
+        statusText={error.message}
+        status={error.status}
+      />
+    );
+  }
   return (
     <Container>
       <NavBar title={"Shopping"} username={"John Doe"}>
         {/* TODO: Remove this button */}
         <button onClick={() => router.replace("/")}>Refresh</button>
       </NavBar>
-      {error && (
-        <ErrorModal
-          onRefresh={() => router.replace("/")}
-          statusText={error.message}
-          status={error.status}
-        />
-      )}
+
       <ProductColumn>
         {!error &&
-          products.length &&
-          products.map((product, index) => (
-            <Product
-              key={index}
-              name={product.name}
-              price={product.price}
-              available={product.available}
-              onAddToCart={handleAddProduct}
-            ></Product>
-          ))}
+          Object.keys(products).map((productName, index) => {
+            const productData = products[productName];
+
+            return (
+              <Product
+                key={index}
+                name={productName}
+                price={productData.price}
+                available={productData.available}
+                onAddToCart={handleAddProduct}
+              ></Product>
+            );
+          })}
       </ProductColumn>
       <CheckoutColumn>
-        <ShoppingCart />
+        <ShoppingCart
+          onRemoveProduct={handleRemoveProduct}
+          onAddProduct={handleAddProduct}
+          cart={productsInCart}
+          vouchers={vouchers}
+        />
       </CheckoutColumn>
     </Container>
   );
