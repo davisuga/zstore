@@ -20,7 +20,9 @@ export type ProductComponentProps = {
 type BasicProductInfo = {
   name: string;
   price: number;
+  available: number;
 };
+
 const Product = ({
   name,
   price,
@@ -29,7 +31,12 @@ const Product = ({
   onAddToCart,
 }: ProductComponentProps) => {
   const [availableUnits, setAvailableUnits] = useState(available);
-
+  const handleClickBuy = () => {
+    if (availableUnits > 0) {
+      setAvailableUnits(availableUnits - 1);
+      onAddToCart({ name, price, available: availableUnits });
+    }
+  };
   return (
     <Container>
       <Picture />
@@ -37,10 +44,10 @@ const Product = ({
         <Name>{name}</Name>
         <Flex flexDirection="row">
           <Price>${price},</Price>
-          <Available>{availableUnits} available</Available>
+          <Available>{available} available</Available>
         </Flex>
       </ProductDescription>
-      <BuyButton onClick={() => onAddToCart({ name, price })} as="button">
+      <BuyButton onClick={handleClickBuy} as="button">
         BUY
       </BuyButton>
       {children}
