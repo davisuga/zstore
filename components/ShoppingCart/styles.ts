@@ -24,7 +24,9 @@ export const Subtotal = styled(Flex)`
   border-bottom: 1px solid gray;
   flex: 0;
 `;
-export const Total = Subtotal;
+export const Total = styled(Subtotal)`
+  font-weight: bold;
+`;
 export const Discount = Subtotal;
 export const Shipping = Subtotal;
 export const ApplyButton = styled.button`
@@ -32,9 +34,16 @@ export const ApplyButton = styled.button`
   border-radius: 5px;
   background-color: black;
   font-weight: lighter;
-  padding: 10px;
+  padding: 13px;
   color: white;
-  font-size: 1.05em;
+  font-size: 0.9em;
+  &:hover {
+    transform: scale(1.06);
+  }
+  &:hover :active {
+    transform: scale(0.9);
+  }
+  transition: transform 0.2s ease-out;
 `;
 export const DiscountArea = styled(Flex)`
   justify-content: space-between;
