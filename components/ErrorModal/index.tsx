@@ -14,6 +14,7 @@ type ErrorModalProps = NetworkingError & { onRefresh: () => void };
 const ErrorModal = ({ status, statusText, onRefresh }: ErrorModalProps) => {
   const [loading, setLoading] = useState(false);
   return (
+    //@ts-ignore
     <Container>
       <ErrorTitle>
         Error: {statusText} ({status})
