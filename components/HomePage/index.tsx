@@ -5,6 +5,8 @@ import { CheckoutColumn, Container, ProductColumn } from "./styles";
 import { useRouter } from "next/router";
 import ShoppingCart from "../ShoppingCart";
 import NavBar from "../NavBar/Index";
+import CheckoutButton from "../CheckoutButton";
+import AlertModal from "../AlertModal";
 
 type HomePageProps = {
   products: Cart;
@@ -15,6 +17,7 @@ type HomePageProps = {
 export default function HomePage({ products, error, vouchers }: HomePageProps) {
   const router = useRouter();
   const [productsInCart, setProductsInCart] = useState<Cart>({});
+  const [showModal, setShowModal] = useState(false);
   const handleAddProduct = ({
     name,
     price,
@@ -60,6 +63,9 @@ export default function HomePage({ products, error, vouchers }: HomePageProps) {
   }
   return (
     <Container>
+      {showModal && (
+        <AlertModal message="Success!" onConfirm={() => setShowModal(false)} />
+      )}
       <NavBar title={"Shopping"} username={"John Doe"}>
         {/* TODO: Remove this button */}
         <button onClick={() => router.replace("/")}>Refresh</button>
@@ -88,6 +94,9 @@ export default function HomePage({ products, error, vouchers }: HomePageProps) {
           cart={productsInCart}
           vouchers={vouchers}
         />
+        <CheckoutButton onClick={() => setShowModal(true)}>
+          CHECKOUT
+        </CheckoutButton>
       </CheckoutColumn>
     </Container>
   );
