@@ -2,7 +2,12 @@ import styled from "styled-components";
 
 type FlexProps = {
   flexDirection?: "column" | "row";
-  justifyContent?: "flex-start" | "flex-end" | "center";
+  justifyContent?:
+    | "flex-start"
+    | "flex-end"
+    | "center"
+    | "space-between"
+    | "space-evenly";
   alignItems?: "flex-start" | "flex-end" | "center" | "stretch";
   alignSelf?: "flex-start" | "flex-end" | "center" | "stretch";
   bg?: string;
