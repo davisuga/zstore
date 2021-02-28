@@ -8,7 +8,7 @@ type ProductProps = {
 type Cart = {
   [productName: string]: {
     price: number;
-    quantity: number;
+    quantity?: number;
     available?: number;
   };
 };
