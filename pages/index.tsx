@@ -1,5 +1,6 @@
 import HomePage from "../components/HomePage";
 import api from "../services/axios";
+import { serializeProducts, serializeVouchers } from "../utils/serializers";
 
 export default function Home({ products, error, vouchers }) {
   return <HomePage {...{ products, error, vouchers }} />;
@@ -16,22 +17,8 @@ export async function getStaticProps() {
       voucherPromise,
     ]);
 
-    const productsData = products.data.products.reduce((acc, product) => {
-      return {
-        ...acc,
-        [product.name]: { price: product.price, available: product.available },
-      };
-    }, {});
-    const vouchersData = vouchers.data.vouchers.reduce((acc, voucher) => {
-      return {
-        ...acc,
-        [voucher.code]: {
-          type: voucher.type,
-          minValue: voucher.minValue || null,
-          amount: voucher.amount,
-        },
-      };
-    }, {});
+    const productsData = serializeProducts(products.data.products);
+    const vouchersData = serializeVouchers(vouchers.data.vouchers);
     return { props: { products: productsData, vouchers: vouchersData } };
   } catch (error) {
     return {
