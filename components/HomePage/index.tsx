@@ -66,10 +66,7 @@ export default function HomePage({ products, error, vouchers }: HomePageProps) {
       {showModal && (
         <AlertModal message="Success!" onConfirm={() => setShowModal(false)} />
       )}
-      <NavBar title={"Shopping"} username={"John Doe"}>
-        {/* TODO: Remove this button */}
-        <button onClick={() => router.replace("/")}>Refresh</button>
-      </NavBar>
+      <NavBar title={"Shopping"} username={"John Doe"}></NavBar>
 
       <ProductColumn>
         {!error &&
