@@ -12,7 +12,7 @@ export const Container = styled(Flex)`
   border-radius: 10px;
   box-shadow: 0px 5px 5px lightgray;
   border: 1px solid #0000;
-
+  aspect-ratio: 1/1;
   &:hover {
     transform: scale(1.05);
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
