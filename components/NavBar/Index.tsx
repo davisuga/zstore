@@ -2,8 +2,12 @@ import React from "react";
 import Flex from "../Flex";
 
 import { Container, Title, Avatar, UserName, UserArea } from "./styles";
-
-const NavBar = ({ children, title, username }) => {
+type NavBarProps = {
+  children?: React.ReactNode;
+  title: string;
+  username: string;
+};
+const NavBar = ({ children, title, username }: NavBarProps) => {
   return (
     <Container>
       <Title>{title}</Title>

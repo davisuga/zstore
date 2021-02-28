@@ -30,8 +30,12 @@ const ProductItem: React.FC<ProductItemProps> = ({
       <ProductInfo>
         <ProductName>{product.name}</ProductName>
         <Flex flexDirection="row" justifyContent="space-between">
-          <ProductQuantity>Quantity: {product.quantity}</ProductQuantity>
-          <ProductPrice>${product.price * product.quantity}</ProductPrice>
+          <ProductQuantity data-testid="quantity">
+            Quantity: {product.quantity}
+          </ProductQuantity>
+          <ProductPrice data-testid="price">
+            ${product.price * product.quantity}
+          </ProductPrice>
         </Flex>
       </ProductInfo>
       <QuantityController>

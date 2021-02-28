@@ -55,7 +55,7 @@ export default function HomePage({ products, error, vouchers }: HomePageProps) {
   if (error) {
     return (
       <ErrorModal
-        onRefresh={() => router.replace("/")}
+        onRefresh={() => window.location.reload()}
         statusText={error.message}
         status={error.status}
       />

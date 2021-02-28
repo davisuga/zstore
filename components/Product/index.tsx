@@ -43,8 +43,8 @@ const Product = ({
       <ProductDescription>
         <Name>{name}</Name>
         <Flex flexDirection="row">
-          <Price>${price},</Price>
-          <Available>{available} available</Available>
+          <Price data-testid="price">${price},</Price>
+          <Available data-testid="available">{available} available</Available>
         </Flex>
       </ProductDescription>
       <BuyButton onClick={handleClickBuy} as="button">
