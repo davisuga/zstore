@@ -22,9 +22,7 @@ type ShoppingCartProps = {
   onRemoveProduct: (product: ProductProps) => void;
 };
 
-const calculateWeightAndPrice = (cart: Cart) => {
-  console.log("Calculating total...");
-
+export const calculateWeightAndPrice = (cart: Cart) => {
   const totalAmountReducer = (
     previousValue: TotalPriceAndWeight,
     currentValue: string
@@ -122,8 +120,9 @@ const ShoppingCart = ({
   return (
     <Container>
       <Title>Shopping Cart</Title>
-      {Object.keys(cart).map((productName) => (
+      {Object.keys(cart).map((productName, index) => (
         <ProductItem
+          key={index}
           onAddProduct={onAddProduct}
           onRemoveProduct={onRemoveProduct}
           product={{ ...cart[productName], name: productName }}
@@ -138,16 +137,16 @@ const ShoppingCart = ({
         <ApplyButton onClick={onApplyDiscount}>APPLY</ApplyButton>
       </DiscountArea>
       <Subtotal>
-        <div>Subtotal:</div> <div>${subtotal}</div>
+        <div>Subtotal:</div> <div data-testid="subtotal">${subtotal}</div>
       </Subtotal>
       <Shipping>
-        <div>Shipping:</div> <div>${shipping}</div>
+        <div>Shipping:</div> <div data-testid="shipping">${shipping}</div>
       </Shipping>
       <Discount>
-        <div>Discount:</div> <div>${discount}</div>
+        <div>Discount:</div> <div data-testid="discount">${discount}</div>
       </Discount>
       <Total>
-        <div>Total:</div> <div>${total}</div>
+        <div>Total:</div> <div data-testid="total">${total}</div>
       </Total>
     </Container>
   );
