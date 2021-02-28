@@ -32,7 +32,6 @@ export async function getStaticProps() {
         },
       };
     }, {});
-    debugger;
     return { props: { products: productsData, vouchers: vouchersData } };
   } catch (error) {
     return {

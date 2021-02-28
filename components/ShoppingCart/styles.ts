@@ -6,8 +6,6 @@ export const Container = styled(Flex)`
   border-radius: 10px;
   flex-direction: column;
   align-self: stretch;
-  margin: 10px;
-  padding: 5px;
   width: 100%;
 `;
 export const Title = styled(Flex)`

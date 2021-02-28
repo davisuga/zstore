@@ -9,10 +9,12 @@ export const Container = styled(Flex)`
 `;
 export const ProductColumn = styled(Flex)`
   flex: 3 1 auto;
-
-  max-width: 66vw;
+  flex-flow: row wrap;
 `;
 
 export const CheckoutColumn = styled(Flex)`
   flex: 3 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px;
 `;
